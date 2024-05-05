@@ -31,6 +31,14 @@ export const LoginForm = () => {
       password: "",
     },
   });
+
+  function YearRange() {
+    const currentYear = new Date().getFullYear();
+    const nextYear = currentYear + 1;
+    const formattedString = `${currentYear}-${nextYear}`;
+
+    return formattedString;
+  }
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     setError("");
     //server side
@@ -41,7 +49,7 @@ export const LoginForm = () => {
           toast({
             description: data.success,
           });
-          router.push("/admin/dashboard");
+          router.push(`/admin/dashboard?year=${YearRange()}`);
         }
       });
     });

@@ -80,122 +80,111 @@ const SettingForm = ({ admin, adminType }: SettingFormProps) => {
   };
 
   return (
-    <div>
-      <Button
-        variant="customButton"
-        className="my-3"
-        onClick={() => router.push("/admin/faculty")}
-      >
-        back
-      </Button>
-      <div className="w-full flex flex-col items-center bg-white pt-20 rounded-md">
-        <div className="text-2xl sm:text-3xl lg:text-5xl font-semibold">
-          Account Settings
-        </div>
-        <div className=" sm:text-lg lg:text-xl">
-          Update your account information
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="">
-            <div className="grid lg:grid-cols-2 m-10 gap-10 gap-x-16">
-              <StandardInput
-                name="name"
-                label="Name"
-                form={form}
-                isPending={isPending}
-                placeholder="Enter your name"
-                adminType={adminType}
-              />
-              <StandardInput
-                name="username"
-                label="Username"
-                form={form}
-                isPending={isPending}
-                placeholder="Enter your username"
-                adminType={adminType}
-              />
-
-              <FormField
-                control={form.control}
-                name="advisory"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Advisory</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        disabled={
-                          adminType !== "SuperAdmin" &&
-                          currentPath !== "/admin/settings"
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(gradeLevels).map(([key, value]) => (
-                            <SelectItem value={key} key={key}>
-                              {value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <StandardInput
-                name="email"
-                label="Email"
-                form={form}
-                isPending={isPending}
-                placeholder="Enter your email"
-                adminType={adminType}
-              />
-              <StandardInput
-                name="password"
-                label="Password"
-                form={form}
-                isPending={isPending}
-                placeholder="Enter your password"
-                type="password"
-                adminType={adminType}
-                className={`${
-                  adminType !== "SuperAdmin" &&
-                  currentPath !== "/admin/settings"
-                    ? "hidden"
-                    : ""
-                }`}
-              />
-              <StandardInput
-                name="position"
-                label="Position"
-                form={form}
-                isPending={isPending}
-                placeholder="Enter your position"
-                adminType={adminType}
-              />
-              <FormError message={error} />
-
-              <Button
-                type="submit"
-                className={`w-1/2 lg:col-start-2 justify-self-end ${
-                  adminType !== "SuperAdmin" &&
-                  currentPath !== "/admin/settings"
-                    ? "hidden"
-                    : ""
-                }`}
-                loading={isPending}
-                variant={"customButton"}
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </Form>
+    <div className="w-full flex flex-col items-center bg-white pt-20 rounded-md">
+      <div className="text-2xl sm:text-3xl lg:text-5xl font-semibold">
+        Account Settings
       </div>
+      <div className=" sm:text-lg lg:text-xl">
+        Update your account information
+      </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="">
+          <div className="grid lg:grid-cols-2 m-10 gap-10 gap-x-16">
+            <StandardInput
+              name="name"
+              label="Name"
+              form={form}
+              isPending={isPending}
+              placeholder="Enter your name"
+              adminType={adminType}
+            />
+            <StandardInput
+              name="username"
+              label="Username"
+              form={form}
+              isPending={isPending}
+              placeholder="Enter your username"
+              adminType={adminType}
+            />
+
+            <FormField
+              control={form.control}
+              name="advisory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Advisory</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={
+                        adminType !== "SuperAdmin" &&
+                        currentPath !== "/admin/settings"
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(gradeLevels).map(([key, value]) => (
+                          <SelectItem value={key} key={key}>
+                            {value}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <StandardInput
+              name="email"
+              label="Email"
+              form={form}
+              isPending={isPending}
+              placeholder="Enter your email"
+              adminType={adminType}
+            />
+            <StandardInput
+              name="password"
+              label="Password"
+              form={form}
+              isPending={isPending}
+              placeholder="Enter your password"
+              type="password"
+              adminType={adminType}
+              className={`${
+                adminType !== "SuperAdmin" && currentPath !== "/admin/settings"
+                  ? "hidden"
+                  : ""
+              }`}
+            />
+            <StandardInput
+              name="position"
+              label="Position"
+              form={form}
+              isPending={isPending}
+              placeholder="Enter your position"
+              adminType={adminType}
+            />
+            <FormError message={error} />
+
+            <Button
+              type="submit"
+              className={`w-1/2 lg:col-start-2 justify-self-end ${
+                adminType !== "SuperAdmin" && currentPath !== "/admin/settings"
+                  ? "hidden"
+                  : ""
+              }`}
+              loading={isPending}
+              variant={"customButton"}
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 };

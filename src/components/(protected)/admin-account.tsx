@@ -27,18 +27,14 @@ import { RegisterAction } from "@/server/action";
 import { FormWrapper } from "@/components/utils";
 
 const RegistrationForm = ({
-  onSubmit,
   title,
   description,
-  error,
-  isPending,
 }: {
-  onSubmit: (values: z.infer<typeof AdminSchema>) => void;
   title: string;
   description: string;
-  error?: string;
-  isPending?: boolean;
 }) => {
+  const [error, setError] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
   const gradeLevels = {
     nursery1: "Nursery 1",
     nursery2: "Nursery 2",
@@ -67,6 +63,26 @@ const RegistrationForm = ({
       advisory: undefined,
     },
   });
+
+  const onSubmit = (values: z.infer<typeof AdminSchema>) => {
+    setError("");
+    startTransition(async () => {
+      RegisterAction(values).then((data) => {
+        setError(data.error);
+        if (!data.error) {
+          toast({
+            description: "You Successfully Registered.",
+          });
+          form.setValue("password", "");
+          form.setValue("name", "");
+          form.setValue("username", "");
+          form.setValue("email", "");
+          form.setValue("position", "");
+          form.setValue("advisory", "nursery1");
+        }
+      });
+    });
+  };
 
   return (
     <FormWrapper title={title} description={description}>

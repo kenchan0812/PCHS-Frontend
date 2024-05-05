@@ -8,7 +8,7 @@ import { StudentSchema } from "@/schemas";
 import { DataTableColumnHeader } from "@/components/(protected)/column-header";
 import { Info, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { DeleteTasksDialog } from "@/components/(protected)/delete-dialog";
+import { DeleteDialog } from "@/components/(protected)/delete-dialog";
 
 export type student = z.infer<typeof StudentSchema>;
 
@@ -171,7 +171,7 @@ export const columns = ({
     cell: function Cell({ row }) {
       const currentPath = usePathname();
       const router = useRouter();
-      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
+      const [showDeleteDialog, setShowDeleteDialog] = useState(false);
       const onCheck = () => {
         if (currentPath === "/admin/student-list/enrolled") {
           router.push(`/admin/student-list/enrolled/${row.original.id}`);
@@ -181,9 +181,9 @@ export const columns = ({
       };
       return (
         <>
-          <DeleteTasksDialog
-            open={showDeleteTaskDialog}
-            onOpenChange={setShowDeleteTaskDialog}
+          <DeleteDialog
+            open={showDeleteDialog}
+            onOpenChange={setShowDeleteDialog}
             student={row}
             session={session}
           />
@@ -197,7 +197,7 @@ export const columns = ({
                 <Trash2
                   color="#c53a3a"
                   className="cursor-pointer"
-                  onClick={() => setShowDeleteTaskDialog(true)}
+                  onClick={() => setShowDeleteDialog(true)}
                 />
               </div>
             )}

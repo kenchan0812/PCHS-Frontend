@@ -20,19 +20,19 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 
-interface DeleteTasksDialogProps
+interface DeleteTDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
   student: Row<z.infer<typeof AdminSchema>>;
   onSuccess?: () => void;
   session: string;
 }
 
-export function DeleteTasksDialog({
+export function DeleteTDialog({
   student,
   onSuccess,
   session,
   ...props
-}: DeleteTasksDialogProps) {
+}: DeleteTDialogProps) {
   const [isDeletePending, startDeleteTransition] = React.useTransition();
   const router = useRouter();
   const OnDelete = async (id: string | undefined) => {
@@ -56,7 +56,7 @@ export function DeleteTasksDialog({
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete
+            This action cannot be undone. This will permanently delete{" "}
             {student.original.email}
           </DialogDescription>
         </DialogHeader>

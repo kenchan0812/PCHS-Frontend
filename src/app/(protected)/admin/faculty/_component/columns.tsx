@@ -8,7 +8,7 @@ import { AdminSchema } from "@/schemas";
 import { Info, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { DataTableColumnHeader } from "@/components/(protected)/column-header";
-import { DeleteTasksDialog } from "@/app/(protected)/admin/faculty/_component/delete-dialog";
+import { DeleteTDialog } from "@/app/(protected)/admin/faculty/_component/delete-dialog";
 
 export type student = z.infer<typeof AdminSchema>;
 
@@ -99,16 +99,16 @@ export const columns = ({
     id: "actions",
     cell: function Cell({ row }) {
       const router = useRouter();
-      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
+      const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
       const onCheck = () => {
         router.push(`/admin/faculty/${row.original.id}`);
       };
       return (
         <>
-          <DeleteTasksDialog
-            open={showDeleteTaskDialog}
-            onOpenChange={setShowDeleteTaskDialog}
+          <DeleteTDialog
+            open={showDeleteDialog}
+            onOpenChange={setShowDeleteDialog}
             student={row}
             session={session}
           />
@@ -122,7 +122,7 @@ export const columns = ({
                 <Trash2
                   color="#c53a3a"
                   className="cursor-pointer"
-                  onClick={() => setShowDeleteTaskDialog(true)}
+                  onClick={() => setShowDeleteDialog(true)}
                 />
               </div>
             )}

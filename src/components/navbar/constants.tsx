@@ -20,7 +20,7 @@ function YearRange() {
 const generateSideNavItems = (isAdmin: boolean) => [
   {
     title: "Dashboard",
-    path: "/admin/dashboard",
+    path: `/admin/dashboard?year=${YearRange()}`,
     icon: <Home />,
   },
   {

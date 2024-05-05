@@ -125,7 +125,7 @@ const StudentForm = ({
       </Button>
       <FormWrapper
         title="Student Enrollment Form"
-        description="Fill out the form to enroll a new student."
+        description="View or edit student information."
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">

@@ -8,7 +8,6 @@ const page = async ({ searchParams }: { searchParams: { year: string } }) => {
   const cookieSession: unknown = cookies().get("session");
 
   const validatedSession = CookiesSchema.safeParse(cookieSession);
-  const plaintext = await getAdminType();
 
   const res = await fetch(
     `${process.env.BACKEND_URL}/api/admin/student/get-all/enrollee/${searchParams.year}`,
@@ -22,6 +21,7 @@ const page = async ({ searchParams }: { searchParams: { year: string } }) => {
       },
     }
   );
+  const plaintext = await getAdminType();
   const data: z.infer<typeof StudentSchema>[] = await res.json();
   return (
     <Table
