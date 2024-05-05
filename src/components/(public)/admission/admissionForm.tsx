@@ -82,6 +82,17 @@ const AdmissionForm = () => {
           toast({
             description: "You Successfully Registered.",
           });
+          form.setValue("learnerRefNo", "");
+          form.setValue("name", "");
+          form.setValue("gradeLevel", "nursery1");
+          form.setValue("classification", "regular");
+          form.setValue("age", "");
+          form.setValue("fatherName", "");
+          form.setValue("motherName", "");
+          form.setValue("contactNum", "");
+          form.setValue("email", "");
+          form.setValue("address", "");
+          form.setValue("enrollStatus", "enrollee");
         }
       });
     });

@@ -1,7 +1,7 @@
 "use client";
 import * as z from "zod";
 import React, { useState, useTransition } from "react";
-import { FieldValues, UseFormReturn, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SuperAdminSchema } from "@/schemas";
 import { toast } from "@/components/ui/use-toast";
@@ -16,23 +16,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 const SuperAdminForm = ({
   data,
 }: {
   data: z.infer<typeof SuperAdminSchema>;
 }) => {
-  const currentPath = usePathname();
-
   const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
@@ -55,7 +46,10 @@ const SuperAdminForm = ({
         body: JSON.stringify(values),
       });
       if (res.ok) {
-        console.log("nice"); //--------------------------------------------------------------------------------------------------------
+        toast({
+          title: "Success",
+          description: "Super Admin Information Updated",
+        });
       }
     });
   };
@@ -70,7 +64,7 @@ const SuperAdminForm = ({
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <div className="grid lg:grid-cols-2 m-10 gap-10 gap-x-16">
+          <div className=" flex flex-col gap-y-10 mt-10 w-full items-center">
             <FormField
               control={form.control}
               name="username"
@@ -81,6 +75,7 @@ const SuperAdminForm = ({
                     <Input
                       type="text"
                       placeholder="Enter your username"
+                      className="w-[300px]"
                       {...field}
                     />
                   </FormControl>
@@ -98,6 +93,7 @@ const SuperAdminForm = ({
                     <Input
                       type="text"
                       placeholder="Enter your password"
+                      className="w-[300px]"
                       {...field}
                     />
                   </FormControl>
@@ -110,7 +106,7 @@ const SuperAdminForm = ({
 
             <Button
               type="submit"
-              className={`w-1/2 lg:col-start-2 justify-self-end`}
+              className={`w-1/2`}
               loading={isPending}
               variant={"customButton"}
             >

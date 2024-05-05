@@ -26,7 +26,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { AddStudentAction } from "@/server/action";
 import { FormWrapper } from "@/components/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const StudentForm = ({
   student,
@@ -38,7 +38,7 @@ const StudentForm = ({
   const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const currentPath = usePathname();
-
+  const router = useRouter();
   const grade_levels = {
     nursery1: "Nursery 1",
     nursery2: "Nursery 2",
@@ -102,194 +102,215 @@ const StudentForm = ({
     });
   };
 
+  function YearRange() {
+    const currentYear = new Date().getFullYear();
+    const nextYear = currentYear + 1;
+    const formattedString = `${currentYear}-${nextYear}`;
+
+    return formattedString;
+  }
+
+  const onCheck = () => {
+    if (currentPath.includes("enrolled")) {
+      router.push(`/admin/student-list/enrolled?year=${YearRange()}`);
+    } else {
+      router.push(`/admin/student-list/enrollee?year=${YearRange()}`);
+    }
+  };
+
   return (
-    <FormWrapper
-      title="Student Enrollment Form"
-      description="Fill out the form to enroll a new student."
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <div className="max-w-[1450px] grid md:grid-cols-2 my-10 gap-10 gap-x-32 mx-10">
-            <FormField
-              control={form.control}
-              name="enrollStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enrollment Status</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(enrollment_status).map(
-                          ([key, value]) => (
+    <div>
+      <Button variant="customButton" className="my-3" onClick={() => onCheck()}>
+        back
+      </Button>
+      <FormWrapper
+        title="Student Enrollment Form"
+        description="Fill out the form to enroll a new student."
+      >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="">
+            <div className="max-w-[1450px] grid md:grid-cols-2 my-10 gap-10 gap-x-32 mx-10">
+              <FormField
+                control={form.control}
+                name="enrollStatus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enrollment Status</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(enrollment_status).map(
+                            ([key, value]) => (
+                              <SelectItem value={key} key={key}>
+                                {value}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <StandardInput
+                name="learnerRefNo"
+                label="Learner Reference Number"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your learner reference number"
+                type="number"
+                adminType={adminType}
+              />
+
+              <StandardInput
+                name="name"
+                label="Name"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your name"
+                adminType={adminType}
+              />
+
+              <FormField
+                control={form.control}
+                name="gradeLevel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Grade Level</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={
+                          adminType !== "SuperAdmin" &&
+                          currentPath !== "/admin/settings"
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(grade_levels).map(([key, value]) => (
                             <SelectItem value={key} key={key}>
                               {value}
                             </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="classification"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Student Classification</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                        disabled={
+                          adminType !== "SuperAdmin" &&
+                          currentPath !== "/admin/settings"
+                        }
+                      >
+                        {Object.entries(student_classifications).map(
+                          ([key, value]) => (
+                            <FormItem
+                              className="flex items-center space-x-3 space-y-0"
+                              key={key}
+                            >
+                              <FormControl>
+                                <RadioGroupItem value={key} />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {value}
+                              </FormLabel>
+                            </FormItem>
                           )
                         )}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <StandardInput
-              name="learnerRefNo"
-              label="Learner Reference Number"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your learner reference number"
-              type="number"
-              adminType={adminType}
-            />
-
-            <StandardInput
-              name="name"
-              label="Name"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your name"
-              adminType={adminType}
-            />
-
-            <FormField
-              control={form.control}
-              name="gradeLevel"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Grade Level</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={
-                        adminType !== "SuperAdmin" &&
-                        currentPath !== "/admin/settings"
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(grade_levels).map(([key, value]) => (
-                          <SelectItem value={key} key={key}>
-                            {value}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="classification"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Student Classification</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                      disabled={
-                        adminType !== "SuperAdmin" &&
-                        currentPath !== "/admin/settings"
-                      }
-                    >
-                      {Object.entries(student_classifications).map(
-                        ([key, value]) => (
-                          <FormItem
-                            className="flex items-center space-x-3 space-y-0"
-                            key={key}
-                          >
-                            <FormControl>
-                              <RadioGroupItem value={key} />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {value}
-                            </FormLabel>
-                          </FormItem>
-                        )
-                      )}
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <StandardInput
-              name="age"
-              label="Age"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your age"
-              type="number"
-              adminType={adminType}
-            />
-            <StandardInput
-              name="fatherName"
-              label="Father Name"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your father name"
-              adminType={adminType}
-            />
-            <StandardInput
-              name="motherName"
-              label="Mother Name"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your mother name"
-              adminType={adminType}
-            />
-            <StandardInput
-              name="contactNum"
-              label="Contact No."
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your contact number"
-              type="number"
-              adminType={adminType}
-            />
-            <StandardInput
-              name="email"
-              label="Email"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your email"
-              adminType={adminType}
-            />
-            <StandardInput
-              name="address"
-              label="Address"
-              form={form}
-              isPending={isPending}
-              placeholder="Enter your address"
-              adminType={adminType}
-            />
-            <FormError message={error} />
-            <Button
-              type="submit"
-              className=" w-1/3 md:col-start-2 justify-self-end"
-              loading={isPending}
-              variant={"customButton"}
-            >
-              Submit
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </FormWrapper>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <StandardInput
+                name="age"
+                label="Age"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your age"
+                type="number"
+                adminType={adminType}
+              />
+              <StandardInput
+                name="fatherName"
+                label="Father Name"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your father name"
+                adminType={adminType}
+              />
+              <StandardInput
+                name="motherName"
+                label="Mother Name"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your mother name"
+                adminType={adminType}
+              />
+              <StandardInput
+                name="contactNum"
+                label="Contact No."
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your contact number"
+                type="number"
+                adminType={adminType}
+              />
+              <StandardInput
+                name="email"
+                label="Email"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your email"
+                adminType={adminType}
+              />
+              <StandardInput
+                name="address"
+                label="Address"
+                form={form}
+                isPending={isPending}
+                placeholder="Enter your address"
+                adminType={adminType}
+              />
+              <FormError message={error} />
+              <Button
+                type="submit"
+                className=" w-1/3 md:col-start-2 justify-self-end"
+                loading={isPending}
+                variant={"customButton"}
+              >
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </FormWrapper>
+    </div>
   );
 };
 
