@@ -17,13 +17,14 @@ import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { Button } from "@/components/ui/button";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const SuperAdminForm = ({
   data,
 }: {
   data: z.infer<typeof SuperAdminSchema>;
 }) => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
@@ -50,6 +51,7 @@ const SuperAdminForm = ({
           title: "Success",
           description: "Super Admin Information Updated",
         });
+        router.refresh();
       }
     });
   };

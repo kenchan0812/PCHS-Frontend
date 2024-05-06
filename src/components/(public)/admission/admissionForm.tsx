@@ -83,6 +83,7 @@ const AdmissionForm = () => {
           toast({
             description: "You Successfully Registered.",
           });
+          router.refresh();
           form.setValue("learnerRefNo", "");
           form.setValue("name", "");
           form.setValue("gradeLevel", "nursery1");

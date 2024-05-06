@@ -97,7 +97,7 @@ const StudentForm = ({
         }
       );
       if (res.ok) {
-        console.log("nice");
+        router.refresh();
       }
     });
   };

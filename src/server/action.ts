@@ -9,6 +9,7 @@ import {
   StudentSchema,
 } from "@/schemas";
 import { decryptSymmetric, encryptSymmetric } from "@/server/secure";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";

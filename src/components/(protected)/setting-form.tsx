@@ -75,6 +75,7 @@ const SettingForm = ({ admin, adminType }: SettingFormProps) => {
           title: "Success",
           description: "Account Information Updated",
         });
+        router.refresh();
       }
     });
   };

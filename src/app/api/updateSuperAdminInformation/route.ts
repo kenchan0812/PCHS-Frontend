@@ -4,6 +4,7 @@ import {
   StudentSchema,
   SuperAdminSchema,
 } from "@/schemas";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -24,5 +25,7 @@ export async function PUT(request: NextRequest) {
   });
   if (!res.ok) return NextResponse.json({ error: "Something went wrong" });
   const data = await res.json();
+  revalidatePath("/");
+
   return NextResponse.json({ data });
 }
