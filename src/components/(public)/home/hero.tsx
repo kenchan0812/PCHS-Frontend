@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 const Hero = () => {
   return (
     <>
@@ -34,12 +35,14 @@ const Hero = () => {
           <br />
           <span className="font-bold">S</span>trength
         </div>
-        <Button
-          size="xl"
-          className="my-10 bg-custom-blue-light  hover:bg-custom-blue-hover"
-        >
-          Get Started
-        </Button>
+        <Link href="/admission">
+          <Button
+            size="xl"
+            className="my-10 bg-custom-blue-light  hover:bg-custom-blue-hover"
+          >
+            Get Started
+          </Button>
+        </Link>
       </div>
       <div className="max-lg:hidden">
         <Carousel

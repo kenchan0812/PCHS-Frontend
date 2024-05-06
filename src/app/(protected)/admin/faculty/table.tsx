@@ -4,7 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 import React from "react";
 import { AdminSchema } from "@/schemas";
 import { z } from "zod";
-const Table = ({
+const Table = async ({
   data,
   adminType,
   session,
