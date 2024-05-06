@@ -2,7 +2,7 @@ import * as z from "zod";
 
 //Schema for student admission
 export const StudentSchema = z.object({
-  learnerRefNo: z.string().min(1, "Required"),
+  learnerRefNo: z.string().optional(),
   name: z.string().min(1, "Required"),
   gradeLevel: z.enum(
     [

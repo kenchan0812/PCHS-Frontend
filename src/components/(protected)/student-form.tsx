@@ -334,7 +334,7 @@ interface StandardInputProps {
 
   form: UseFormReturn<
     {
-      learnerRefNo: string;
+      learnerRefNo?: string;
       name: string;
       gradeLevel:
         | "nursery1"
