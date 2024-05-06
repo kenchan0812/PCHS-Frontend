@@ -54,20 +54,9 @@ const generateSideNavItems = (isAdmin: boolean) => [
       ]
     : [
         {
-          title: "Create Account",
-          path: "/admin/register",
+          title: "Settings",
+          path: "/admin/settings/super",
           icon: <Settings />,
-          submenu: true,
-          subMenuItems: [
-            {
-              title: "Settings",
-              path: `/admin/settings/super`,
-            },
-            {
-              title: "Create Account",
-              path: `/admin/register`,
-            },
-          ],
         },
       ]),
 ];

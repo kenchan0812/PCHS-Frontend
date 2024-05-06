@@ -19,7 +19,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { startTransition, useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { DownloadIcon } from "lucide-react";
 import { exportExcel } from "@/components/(protected)/export";
@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   tableHeight?: string;
   tableWidth?: string;
+  adminType?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -44,7 +45,9 @@ export function DataTable<TData, TValue>({
   data,
   tableHeight,
   tableWidth,
+  adminType,
 }: DataTableProps<TData, TValue>) {
+  const [transition, setTransition] = useTransition();
   const router = useRouter();
   const currentPath = usePathname();
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -87,6 +90,17 @@ export function DataTable<TData, TValue>({
       router.push(`/admin/student-list/enrollee/?year=${value}`);
     }
   };
+
+  const addStudent = () => {
+    startTransition(() => {
+      router.push("/admin/student-list/enrolled/add-student");
+    });
+  };
+  const addFaculty = () => {
+    startTransition(() => {
+      router.push("/admin/register");
+    });
+  };
   return (
     <div className={tableWidth}>
       <div className="flex justify-between">
@@ -114,22 +128,27 @@ export function DataTable<TData, TValue>({
             variant="outline"
             size="sm"
             onClick={() => exportExcel(table.getFilteredRowModel().rows)}
+            loading={transition}
           >
             <DownloadIcon className="mr-2 size-4" aria-hidden="true" />
             Export
           </Button>
 
           {currentPath === "/admin/student-list/enrolled" && (
-            <Button
-              variant="customButton"
-              onClick={() =>
-                router.push("/admin/student-list/enrolled/add-student")
-              }
-            >
+            <Button variant="customButton" onClick={() => addStudent()}>
               Add Student
             </Button>
           )}
         </div>
+        {currentPath === "/admin/faculty" && adminType === "SuperAdmin" && (
+          <Button
+            variant="customButton"
+            onClick={() => addFaculty()}
+            loading={transition}
+          >
+            Add Admin
+          </Button>
+        )}
       </div>
       <div className="rounded-md border bg-white">
         <Table>

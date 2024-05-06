@@ -18,6 +18,7 @@ const Table = async ({
       columns={columns({ adminType, session })}
       data={data}
       tableHeight="h-28"
+      adminType={adminType}
     />
   );
 };
