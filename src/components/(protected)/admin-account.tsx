@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { RegisterAction } from "@/server/action";
 import { FormWrapper } from "@/components/utils";
+import { useRouter } from "next/navigation";
 
 const RegistrationForm = ({
   title,
@@ -33,6 +34,7 @@ const RegistrationForm = ({
   title: string;
   description: string;
 }) => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const gradeLevels = {
@@ -73,6 +75,7 @@ const RegistrationForm = ({
           toast({
             description: "You Successfully Registered.",
           });
+          router.refresh();
           form.setValue("password", "");
           form.setValue("name", "");
           form.setValue("username", "");
