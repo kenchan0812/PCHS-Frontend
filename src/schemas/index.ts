@@ -129,6 +129,7 @@ export const OptionalAdminSchema = z.object({
     )
   ),
   position: z.optional(z.string()),
+  id: z.optional(z.string()),
 });
 
 export const CookiesSchema = z.object({

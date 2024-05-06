@@ -36,19 +36,21 @@ export function DeleteTDialog({
   const [isDeletePending, startDeleteTransition] = React.useTransition();
   const router = useRouter();
   const OnDelete = async (id: string | undefined) => {
-    const res = fetch(`/api/deleteAdminbyId`, {
-      method: "DELETE",
+    startDeleteTransition(async () => {
+      const res = fetch(`/api/deleteAdminbyId`, {
+        method: "DELETE",
 
-      body: JSON.stringify(id),
-    });
-    const data = await res;
-    if (data.ok) {
-      toast({
-        title: "Success",
-        description: "Admin deleted successfully",
+        body: JSON.stringify(id),
       });
-      router.refresh();
-    }
+      const data = await res;
+      if (data.ok) {
+        toast({
+          title: "Success",
+          description: "Admin deleted successfully",
+        });
+        router.refresh();
+      }
+    });
   };
   return (
     <Dialog {...props}>

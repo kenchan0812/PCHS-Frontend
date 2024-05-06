@@ -112,7 +112,7 @@ export const HeaderMobile = ({
                     <div className="flex size-full justify-center mt-40">
                       <Button
                         className="w-1/2"
-                        variant="destructive"
+                        variant="customDestructive"
                         onClick={onSubmit}
                         loading={isPending}
                       >

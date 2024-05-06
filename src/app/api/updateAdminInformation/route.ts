@@ -8,7 +8,8 @@ export async function PUT(request: NextRequest) {
   const cookieStore: unknown = cookies().get("session");
   const validatedCookie = CookiesSchema.safeParse(cookieStore);
   const admin: z.infer<typeof AdminSchema> = await request.json();
-  const res = await fetch(`${process.env.BACKEND_URL}/api/admin/update`, {
+  const id = request.nextUrl.searchParams.get("id");
+  const res = await fetch(`${process.env.BACKEND_URL}/api/admin/update/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
